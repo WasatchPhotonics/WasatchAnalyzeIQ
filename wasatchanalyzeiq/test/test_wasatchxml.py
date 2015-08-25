@@ -33,6 +33,10 @@ class Test(unittest.TestCase):
         # wasatch logo is present
         self.assertTrue(fui.labelLogo.isVisible())
 
+        # Acquire and cancel buttons are available
+        self.assertTrue(fui.toolButtonAcquire.isVisible())
+        self.assertTrue(fui.toolButtonCancel.isVisible())
+
     def test_control_limits(self):
         fui = self.form.ui
 
@@ -67,7 +71,29 @@ class Test(unittest.TestCase):
         spb.setValue(100)
         self.assertEqual(spb.value(), 100)
 
-    #def test_xml_output(self):
+    def test_xml_output(self):
+        # Click the acquire button, read from the last generated xml
+        # output variable 
+        xml_output = self.form.last_xml_output()
+        self.assertEqual(xml_output, "invalid")
+
+        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
+            QtCore.Qt.LeftButton)
+        xml_output = self.form.last_xml_output()
+
+        head_str = "<title>Data from Wasatch Photonics device</title>"
+        self.assertTrue(head_str in xml_output)
+
+        self.assertTrue("$datestamp" not in xml_output)
+        self.assertTrue("$timestamp" not in xml_output)
+
+        # Make sure none of the python string template tags persist in
+        # the xml output - check for $ which as of this writing only
+        # appears in the python template tag areas
+        self.assertFalse("$" in xml_output)
+
     #def test_long_integration_feedback(self):
+
+
 if __name__ == "__main__":
     unittest.main()
