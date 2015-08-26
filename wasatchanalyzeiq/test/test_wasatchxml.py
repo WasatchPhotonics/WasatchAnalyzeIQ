@@ -78,6 +78,11 @@ class Test(unittest.TestCase):
         xml_output = self.form.last_xml_output()
         self.assertEqual(xml_output, "invalid")
 
+        # Simulated device is rquired
+        sim_device = SimulatedUSB()
+        sim_device.assign("Stroker785L")
+        self.assertTrue(self.form.set_device(sim_device))
+
         QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
             QtCore.Qt.LeftButton)
         xml_output = self.form.last_xml_output()
