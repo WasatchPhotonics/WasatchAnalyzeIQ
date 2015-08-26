@@ -6,6 +6,7 @@ import unittest
 from PyQt4 import QtGui, QtTest, QtCore
 
 from wasatchanalyzeiq import wasatchxml
+from wasatchusb.camera import SimulatedUSB
 
 class Test(unittest.TestCase):
 
@@ -92,8 +93,41 @@ class Test(unittest.TestCase):
         # appears in the python template tag areas
         self.assertFalse("$" in xml_output)
 
+
+    def test_wavenumber_translation(self):
+        # Create a simulation device, assign it to the device in the
+        # application
+        sim_device = SimulatedUSB()
+        self.assertTrue(sim_device.assign("Stroker785L"))
+
+        # Assign the calibration coefficients
+        self.form.ui.lineEditCoeff0.setText("7.25405E+02")
+        self.form.ui.lineEditCoeff1.setText("1.43880E-01")
+        self.form.ui.lineEditCoeff2.setText("7.16617E-06")
+        self.form.ui.lineEditCoeff3.setText("-8.68137E-09")
+
+        self.assertTrue(self.form.set_device(sim_device))
+        # Click the acquire button, expect the Y axis to match the
+        # wavenumbers specified by the calibration coefficients
+        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
+            QtCore.Qt.LeftButton)
+        xml_output = self.form.last_xml_output()
+        #print "Full out: %s" % xml_output
+
+        xval = xml_output.split("dim = \"x\">")[1]
+        xval = xval.split(" \n\t\t</values>")[0]
+        xval = xval.replace('\n\t\t\t', '') # remove prefix
+        xaxis_data = xval.split(' ')
+        #print "xval %s and last %s" % (xval , xaxis_data[-1])
+
+        first_conv = "-1046.55"
+        last_conv = "12738.79"
+        self.assertEqual("%05.2f" % float(xaxis_data[0]), first_conv)
+        self.assertEqual("%05.2f" % float(xaxis_data[-1]), last_conv)
+
+        # Change the calibration coefficients to known values, make sure
+        # the wavenumber computation matches
+
     #def test_long_integration_feedback(self):
-
-
 if __name__ == "__main__":
     unittest.main()
