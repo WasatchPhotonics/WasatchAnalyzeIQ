@@ -56,7 +56,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.labelDeviceText, 0, 2, 1, 1)
         self.labelLogo = QtGui.QLabel(self.tab)
         self.labelLogo.setText(_fromUtf8(""))
-        self.labelLogo.setPixmap(QtGui.QPixmap(_fromUtf8("imagery/wasatch_name.png")))
+        self.labelLogo.setPixmap(QtGui.QPixmap(_fromUtf8(":/imagery/imagery/wasatch_name.png")))
         self.labelLogo.setObjectName(_fromUtf8("labelLogo"))
         self.gridLayout.addWidget(self.labelLogo, 0, 1, 1, 1)
         self.toolButtonCancel = QtGui.QToolButton(self.tab)
@@ -141,3 +141,4 @@ class Ui_MainWindow(object):
         self.lineEditCoeff3.setText(_translate("MainWindow", "-3.17627e-08", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Calibration", None))
 
+import wasatchanalyzeiq_resources_rc
