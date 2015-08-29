@@ -98,6 +98,19 @@ class Test(unittest.TestCase):
         # appears in the python template tag areas
         self.assertFalse("$" in xml_output)
 
+    def test_acquire_closes_window(self):
+        # Simulated device is rquired
+        sim_device = SimulatedUSB()
+        sim_device.assign("Stroker785L")
+        self.assertTrue(self.form.set_device(sim_device))
+        self.form.ui.spinBoxIntegrationTime.setValue(3000)
+
+        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
+            QtCore.Qt.LeftButton)
+        xml_output = self.form.last_xml_output()
+
+        QtTest.QTest.qWait(3000)
+        self.assertFalse(self.form.isVisible())
 
     def test_wavenumber_translation(self):
         # Create a simulation device, assign it to the device in the
@@ -141,7 +154,16 @@ class Test(unittest.TestCase):
         self.assertEqual(self.form.ui.labelDeviceText.text(), 
             "Connected to Stroker785L")
     
-    #def test_long_integration_feedback(self):
+    def test_long_integration_feedback(self):
+        # Set the lcdnumber to a known value
+            
+        # Trigger the acquisition
+
+        # make sure halfway through the numbers are in range
+
+        # After the total integration time has passed, make sure the box
+        # says zero
+        pass
 
 if __name__ == "__main__":
     unittest.main()

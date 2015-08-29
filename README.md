@@ -21,4 +21,7 @@ Documentation
 
 * First, run the tests with nose
 
-
+    For details on how to install pyqt in a virtual environment that
+    closely matches that provided by python xy 2.7.10, see the file: 
+   
+https://github.com/nharringtonwasatch/BoardTester/blob/master/docs/guiqwt_pythonxy_match.md
