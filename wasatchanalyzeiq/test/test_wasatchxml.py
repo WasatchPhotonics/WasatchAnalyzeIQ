@@ -1,12 +1,14 @@
 """ Tests for wasatchxml gui
 """
 
+import time
 import unittest
 
 from PyQt4 import QtGui, QtTest, QtCore
 
 from wasatchanalyzeiq import wasatchxml
 from wasatchusb.camera import SimulatedUSB
+from wasatchusb.camera import RealisticSimulatedUSB
 
 class Test(unittest.TestCase):
 
@@ -104,12 +106,19 @@ class Test(unittest.TestCase):
         sim_device.assign("Stroker785L")
         self.assertTrue(self.form.set_device(sim_device))
         self.form.ui.spinBoxIntegrationTime.setValue(3000)
+        QtTest.QTest.qWaitForWindowShown(self.form)
 
         QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
             QtCore.Qt.LeftButton)
-        xml_output = self.form.last_xml_output()
+       
+        # Wait 1 second, make sure lcd number values are 'around' the
+        # appropriate range
+        QtTest.QTest.qWait(1000)
+        lcd_num = self.form.ui.lcdNumber.value()
+        self.assertLess(lcd_num, 2500)
+        self.assertGreater(lcd_num, 1500)
 
-        QtTest.QTest.qWait(3000)
+        QtTest.QTest.qWait(2500)
         self.assertFalse(self.form.isVisible())
 
     def test_wavenumber_translation(self):
@@ -154,16 +163,39 @@ class Test(unittest.TestCase):
         self.assertEqual(self.form.ui.labelDeviceText.text(), 
             "Connected to Stroker785L")
     
-    def test_long_integration_feedback(self):
+    def test_realistic_simulation_long_integration_feedback(self):
         # Set the lcdnumber to a known value
-            
-        # Trigger the acquisition
+        rel_device = RealisticSimulatedUSB()
+        rel_device.assign("Stroker785L")
 
-        # make sure halfway through the numbers are in range
+        int_time = 3000
+        rel_device.set_integration_time(int_time)
 
-        # After the total integration time has passed, make sure the box
-        # says zero
-        pass
+        # Setup device, Trigger the acquisition
+        self.assertTrue(self.form.set_device(rel_device))
+        self.form.ui.spinBoxIntegrationTime.setValue(int_time)
+        QtTest.QTest.qWaitForWindowShown(self.form)
+        start_time = time.time()
+
+        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
+            QtCore.Qt.LeftButton)
+
+        # After the total integration time has passed, make sure the
+        # form is hidden
+        QtTest.QTest.qWait(int_time)
+        self.assertFalse(self.form.isVisible())
+
+        # If a blocking operation has occurred, the entire application
+        # run time will be much higher than the integration time
+        end_time = time.time()
+        diff_time = end_time - start_time
+        #print "Diff time is: %s" % diff_time
+
+        # The halfway test above adds one second to the margin time, add
+        # a fudge factor to for an extreme system load
+        margin_time = (int_time + 1000 + 500) / 1000.0
+        self.assertLess(diff_time, margin_time)
+        self.assertGreater(diff_time, (int_time + 100) / 1000.0)
 
 if __name__ == "__main__":
     unittest.main()
