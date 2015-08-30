@@ -184,10 +184,9 @@ class Test(unittest.TestCase):
         # run time will be much higher than the integration time
         end_time = time.time()
         diff_time = end_time - start_time
-        #print "Diff time is: %s" % diff_time
 
-        # The halfway test above adds one second to the margin time, add
-        # a fudge factor to for an extreme system load
+        # make sure the returned application run time is within 500ms of
+        # the specified integration time
         margin_time = (int_time) / 1000.0
         self.assertLess(diff_time, margin_time + 500)
         self.assertGreater(diff_time, margin_time - 500)
