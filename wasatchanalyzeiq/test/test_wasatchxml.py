@@ -16,6 +16,7 @@ class Test(unittest.TestCase):
     def setUp(self):
         self.app = QtGui.QApplication([])
         self.form = wasatchxml.WasatchXML()
+        QtTest.QTest.qWaitForWindowShown(self.form)
 
     def tearDown(self):
         # This may help with segfaults
@@ -107,7 +108,6 @@ class Test(unittest.TestCase):
         sim_device.assign("Stroker785L")
         self.assertTrue(self.form.set_device(sim_device))
         self.form.ui.spinBoxIntegrationTime.setValue(3000)
-        QtTest.QTest.qWaitForWindowShown(self.form)
 
         QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
             QtCore.Qt.LeftButton)
@@ -164,41 +164,6 @@ class Test(unittest.TestCase):
         self.assertEqual(self.form.ui.labelDeviceText.text(), 
             "Connected to Stroker785L")
     
-    def test_realistic_simulation_long_integration_feedback(self):
-        # This test is setup to fail with the blocking
-        # realisticsimulatedusb - change to threaded usb to make this
-        # test pass
-        rel_device = RealisticSimulatedUSB()
-        rel_device.assign("Stroker785L")
-
-        int_time = 3000
-        rel_device.set_integration_time(int_time)
-
-        # Setup device, Trigger the acquisition
-        self.assertTrue(self.form.set_device(rel_device))
-        self.form.ui.spinBoxIntegrationTime.setValue(int_time)
-        QtTest.QTest.qWaitForWindowShown(self.form)
-        start_time = time.time()
-
-        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
-            QtCore.Qt.LeftButton)
-
-        # After the total integration time has passed, make sure the
-        # form is hidden
-        QtTest.QTest.qWait(int_time)
-
-        # If a blocking operation has occurred, the entire application
-        # run time will be much higher than the integration time
-        end_time = time.time()
-        diff_time = end_time - start_time
-        #print "Diff time is: %s" % diff_time
-
-        # The halfway test above adds one second to the margin time, add
-        # a fudge factor to for an extreme system load
-        margin_time = (int_time + 1000 + 500) / 1000.0
-        self.assertLess(diff_time, margin_time)
-        self.assertGreater(diff_time, (int_time + 100) / 1000.0)
-
     def test_threaded_simulation_long_integration_feedback(self):
         thr_device = ThreadedUSB()
         thr_device.assign("Stroker785L")
@@ -209,15 +174,11 @@ class Test(unittest.TestCase):
         # Setup device, Trigger the acquisition
         self.assertTrue(self.form.set_device(thr_device))
         self.form.ui.spinBoxIntegrationTime.setValue(int_time)
-        QtTest.QTest.qWaitForWindowShown(self.form)
         start_time = time.time()
 
         QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
             QtCore.Qt.LeftButton)
 
-        # After the total integration time has passed, make sure the
-        # form is hidden
-        QtTest.QTest.qWait(int_time)
 
         # If a blocking operation has occurred, the entire application
         # run time will be much higher than the integration time
