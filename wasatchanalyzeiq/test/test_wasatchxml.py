@@ -179,7 +179,7 @@ class Test(unittest.TestCase):
         QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
             QtCore.Qt.LeftButton)
 
-
+        QtTest.QTest.qWait(int_time)
         # If a blocking operation has occurred, the entire application
         # run time will be much higher than the integration time
         end_time = time.time()
@@ -188,9 +188,9 @@ class Test(unittest.TestCase):
 
         # The halfway test above adds one second to the margin time, add
         # a fudge factor to for an extreme system load
-        margin_time = (int_time + 1000 + 500) / 1000.0
-        self.assertLess(diff_time, margin_time)
-        self.assertGreater(diff_time, (int_time + 10) / 1000.0)
+        margin_time = (int_time) / 1000.0
+        self.assertLess(diff_time, margin_time + 500)
+        self.assertGreater(diff_time, margin_time - 500)
 
 
 if __name__ == "__main__":
