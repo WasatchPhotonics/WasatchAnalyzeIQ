@@ -9,6 +9,7 @@ from PyQt4 import QtGui, QtTest, QtCore
 from wasatchanalyzeiq import wasatchxml
 from wasatchusb.camera import SimulatedUSB
 from wasatchusb.camera import RealisticSimulatedUSB
+from wasatchusb.camera import ThreadedUSB
 
 class Test(unittest.TestCase):
 
@@ -164,7 +165,9 @@ class Test(unittest.TestCase):
             "Connected to Stroker785L")
     
     def test_realistic_simulation_long_integration_feedback(self):
-        # Set the lcdnumber to a known value
+        # This test is setup to fail with the blocking
+        # realisticsimulatedusb - change to threaded usb to make this
+        # test pass
         rel_device = RealisticSimulatedUSB()
         rel_device.assign("Stroker785L")
 
@@ -183,7 +186,6 @@ class Test(unittest.TestCase):
         # After the total integration time has passed, make sure the
         # form is hidden
         QtTest.QTest.qWait(int_time)
-        self.assertFalse(self.form.isVisible())
 
         # If a blocking operation has occurred, the entire application
         # run time will be much higher than the integration time
@@ -196,6 +198,39 @@ class Test(unittest.TestCase):
         margin_time = (int_time + 1000 + 500) / 1000.0
         self.assertLess(diff_time, margin_time)
         self.assertGreater(diff_time, (int_time + 100) / 1000.0)
+
+    def test_threaded_simulation_long_integration_feedback(self):
+        thr_device = ThreadedUSB()
+        thr_device.assign("Stroker785L")
+
+        int_time = 3000
+        thr_device.set_integration_time(int_time)
+
+        # Setup device, Trigger the acquisition
+        self.assertTrue(self.form.set_device(thr_device))
+        self.form.ui.spinBoxIntegrationTime.setValue(int_time)
+        QtTest.QTest.qWaitForWindowShown(self.form)
+        start_time = time.time()
+
+        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
+            QtCore.Qt.LeftButton)
+
+        # After the total integration time has passed, make sure the
+        # form is hidden
+        QtTest.QTest.qWait(int_time)
+
+        # If a blocking operation has occurred, the entire application
+        # run time will be much higher than the integration time
+        end_time = time.time()
+        diff_time = end_time - start_time
+        #print "Diff time is: %s" % diff_time
+
+        # The halfway test above adds one second to the margin time, add
+        # a fudge factor to for an extreme system load
+        margin_time = (int_time + 1000 + 500) / 1000.0
+        self.assertLess(diff_time, margin_time)
+        self.assertGreater(diff_time, (int_time + 10) / 1000.0)
+
 
 if __name__ == "__main__":
     unittest.main()
