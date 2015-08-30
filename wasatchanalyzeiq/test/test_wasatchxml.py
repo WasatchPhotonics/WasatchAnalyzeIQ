@@ -11,16 +11,22 @@ from wasatchusb.camera import SimulatedUSB
 from wasatchusb.camera import RealisticSimulatedUSB
 from wasatchusb.camera import ThreadedUSB
 
+       
+# Create one reusable instance of the QApplication. You will see all
+# sorts of various hangs and segfaults if you put this in setUp or in a
+# class setup method. The idea to split it out of the test setup was 
+#from: http://snorf.net/blog/2014/01/04/\
+#    writing-unit-tests-for-qgis-python-plugins/
+app = QtGui.QApplication([])
+
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.app = QtGui.QApplication([])
         self.form = wasatchxml.WasatchXML()
-        QtTest.QTest.qWaitForWindowShown(self.form)
 
     def tearDown(self):
-        # This may help with segfaults
-        self.app.closeAllWindows()
+        # This cleans up old windows from rapid tests
+        app.closeAllWindows()
 
     def test_startup_layout(self):
         # window is correct size
@@ -179,7 +185,12 @@ class Test(unittest.TestCase):
         QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
             QtCore.Qt.LeftButton)
 
-        QtTest.QTest.qWait(int_time)
+        # Wait for the timer to finish
+        # If will hang here in nose tests because it thinks the form is
+        # not shown
+        while self.form.resultTimer.isActive():
+            QtTest.QTest.qWait(300)
+
         # If a blocking operation has occurred, the entire application
         # run time will be much higher than the integration time
         end_time = time.time()
@@ -188,8 +199,8 @@ class Test(unittest.TestCase):
         # make sure the returned application run time is within 500ms of
         # the specified integration time
         margin_time = (int_time) / 1000.0
-        self.assertLess(diff_time, margin_time + 500)
-        self.assertGreater(diff_time, margin_time - 500)
+        self.assertLess(diff_time, margin_time + 0.5)
+        self.assertGreater(diff_time, margin_time - 0.5)
 
 
 if __name__ == "__main__":
