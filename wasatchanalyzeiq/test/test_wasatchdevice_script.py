@@ -20,7 +20,7 @@ class Test(unittest.TestCase):
 
 
     def test_scripts_main(self):
-        result = wasatchdevice.main([])
+        result = wasatchdevice.main(["-a"])
         self.assertEquals(0, result)
 
     def test_with_gui_main(self):

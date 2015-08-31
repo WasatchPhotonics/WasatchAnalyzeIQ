@@ -10,6 +10,8 @@ from string import Template
 
 from wasatchanalyzeiq.ui.AnalyzeIQLayout import Ui_MainWindow
 from wasatchusb.camera import ThreadedUSB
+from wasatchusb.camera import CameraUSB
+from wasatchusb.utils import FindDevices
 
 class WasatchXML(QtGui.QMainWindow):
     
@@ -43,6 +45,23 @@ class WasatchXML(QtGui.QMainWindow):
             
             self.ui.labelDeviceText.setText("Connected to %s" %
                 self.device.serial_number)
+
+        else:
+            fd = FindDevices()
+            result, usb_info = fd.list_usb()
+            print " USB ID strings: %s" % usb_info
+        
+            #result, serial = fd.get_serial(self.vid, self.pid)
+            #bus_str += " Serial USB Descriptor: %s" % serial
+
+            self.device = CameraUSB()
+            result = self.device.connect(0x24aa, 0x0009)
+            print "Connect: %s" % result
+            result, sw_code = self.device.get_sw_code()
+            result, fpga_code = self.device.get_fpga_code()
+    
+            print  "SW: %s FPGA: %s" % (sw_code, fpga_code)
+
         return True
 
     def acquire(self):

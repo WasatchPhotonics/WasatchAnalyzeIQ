@@ -8,6 +8,8 @@ import argparse
 
 from PyQt4 import QtGui
 
+from wasatchanalyzeiq import wasatchxml
+
 class WasatchDeviceApplication(object):
     """ Wrapper around application control code based on:
     https://groups.google.com/d/msg/comp.lang.python/j_tFS3uUFBY/\
@@ -40,18 +42,12 @@ class WasatchDeviceApplication(object):
         exit with the app.exec if the unittest has not created the qt 
         application.
         """
+        print "in run with: %s" % self.args.auto_capture
 
-       # if not self.args.testing:
-       #     app = QtGui.QApplication(sys.argv)
-            
-        app = QtGui.QApplication(sys.argv)
+        self.form = wasatchxml.WasatchXML()
 
-        print "Need auto click"
-
-        #if not self.args.testing:
-            #sys.exit(app.exec_())
-        sys.exit(app.exec_())
-
+        if self.args.auto_capture:
+            self.form.acquire()
 
 def main(argv=None): 
     """ main calls the wrapper code around the application objects with
@@ -59,19 +55,20 @@ def main(argv=None):
     https://groups.google.com/d/msg/comp.lang.python/j_tFS3uUFBY/\
         ciA7xQMe6TMJ
     """
-    
+   
     if argv is None: 
         from sys import argv as sys_argv 
         argv = sys_argv 
-    else:
-        # Strip out the program name to match the unittest setup
-        argv = argv[1:]
+        
+    print "start main: %s" % argv
 
     exit_code = 0
     try:
+        app = QtGui.QApplication(sys.argv)
         wsdapp = WasatchDeviceApplication()
         wsdapp.parse_args(argv)
         wsdapp.run()
+        sys.exit(app.exec_())
     except SystemExit, exc:
         exit_code = exc.code
 
