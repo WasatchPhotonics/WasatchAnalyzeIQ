@@ -56,6 +56,7 @@ class Test(unittest.TestCase):
 
         clk = QtTest.QTest.mouseClick
 
+        # This fails on ms windows! 
         clk(fui.checkBoxLaserEnable, QtCore.Qt.LeftButton)
         self.assertTrue(fui.checkBoxLaserEnable.isChecked())
 
