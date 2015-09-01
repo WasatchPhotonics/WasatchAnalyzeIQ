@@ -10,11 +10,28 @@ Requirements
   * PyQt 4.7+
   * NumPy
 
-Installation Methods
+Installation 
 --------------------
 
-Run windows installer
-Copy of the analyzeiq required configuration
+Copy the contents of the folder into analyzeiq directory
+screenshots from email go here
+
+Setup and Rebuilding
+--------------------
+
+After modifications have been made, rebuild the wasatchdevice_inst and
+wasatchdevice_check executables with the commands:
+
+in root of  WasatchAnalyzeIQ:
+
+python wasatchdevice_check_generate.py py2exe
+python wasatchdevice_inst_generate.py py2exe
+
+Copy the entire contents of the executable file into the directory:
+
+To package up for installation, create a zip file with the name:
+11_Wasatch.zip
+
 
 Documentation
 -------------
