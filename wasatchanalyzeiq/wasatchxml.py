@@ -112,9 +112,9 @@ class WasatchXML(QtGui.QMainWindow):
         the timer reaches zero, otherwise just return empty data.
         """
         if self.device.is_data_ready():
-            print "Data ready, hack in wavenum axis, intensity"
-            pix_data = self.device.get_last_data()
-            self.build_xml(pix_data, pix_data) 
+            wavenum_axis, intensity_data = self.device.get_line_wavenumber()
+            wavenum_axis = numpy.linspace(0, 1000, 1024)
+            self.build_xml(wavenum_axis, intensity_data)
             self.resultTimer.stop()
 
         else:           

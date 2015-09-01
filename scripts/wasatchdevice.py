@@ -98,12 +98,17 @@ def main(argv=None):
         exit_code = exc.code
 
     try:
-        sys.stderr.write("last xml; %s\n" % wsdapp.form.last_xml_output())
+        #sys.stderr.write("last xml; %s\n" % wsdapp.form.last_xml_output())
+        out_file = open("c:\\projects\\outfile.txt", "w")
+        out_file.write(wsdapp.form.last_xml_output())
         print wsdapp.form.last_xml_output()
     except:
         print "Problem executing xml output"
-
-    sys.stderr.write("Exit with code 0")
+    #xmlfile = open("C:\\projects\orig_inst.log")
+    #for line in xmlfile.readlines():
+        #print line, 
+#
+    #sys.stderr.write("Exit with code 0")
     sys.exit(0)
     return exit_code 
 
