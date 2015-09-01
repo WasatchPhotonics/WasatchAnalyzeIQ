@@ -112,14 +112,13 @@ class WasatchXML(QtGui.QMainWindow):
         the timer reaches zero, otherwise just return empty data.
         """
         if self.device.is_data_ready():
-            wavenum_axis, intensity_data = self.device.get_line_wavenumber()
-            #wavenum_axis = numpy.linspace(0, 1000, 1024)
-            self.build_xml(wavenum_axis, intensity_data)
+            intensity_data = self.device.get_last_data()
+            #self.build_xml(wavenum_axis, intensity_data)
             self.resultTimer.stop()
 
         else:           
             if self.ui.lcdNumber.value() > 0: 
-                self.resultTimer.start(0)
+                self.resultTimer.start(100)
 
 
     def delay_close(self):
@@ -188,6 +187,9 @@ class WasatchXML(QtGui.QMainWindow):
         self.generated_xml_str = xml.safe_substitute(populated)
 
     def last_xml_output(self):
+        """ Make sure all of the timers are forced stop if the program is
+        exited, catch the exceptions if they have not been created.
+        """
         try:
             self.resultTimer.stop()
         except:

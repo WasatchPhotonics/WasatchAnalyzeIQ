@@ -30,7 +30,7 @@ class Test(unittest.TestCase):
 
     def test_startup_layout(self):
         # window is correct size
-        self.assertEqual(self.form.width(), 622)
+        self.assertEqual(self.form.width(), 540)
         self.assertEqual(self.form.height(), 302)
         
         # Basic controls are available
@@ -209,7 +209,7 @@ class Test(unittest.TestCase):
             QtCore.Qt.LeftButton)
 
         # Wait for the timer to finish
-        # If will hang here in nose tests because it thinks the form is
+        # If may hang here in nose tests because it thinks the form is
         # not shown
         while self.form.resultTimer.isActive():
             QtTest.QTest.qWait(300)
