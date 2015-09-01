@@ -7,8 +7,8 @@
     <!-- which are only needed if you need to pass additional arguments to the programs. -->
     <manufacturer>Wasatch Photonics</manufacturer>
     <model>Stroker</model>
-    <launchProgram>wasatch_inst.exe</launchProgram>
-    <checkConnectProgram>wasatch_check.exe</checkConnectProgram>
-    <about>Allows communication with a Wasatch Photonics Stroker.</about>
+    <launchProgram>wasatchdevice_inst.exe</launchProgram>
+    <checkConnectProgram>wasatchdevice_check.exe</checkConnectProgram>
+    <about>Enables communication with a Wasatch Photonics Stroker.</about>
   </interface>
 </inst>

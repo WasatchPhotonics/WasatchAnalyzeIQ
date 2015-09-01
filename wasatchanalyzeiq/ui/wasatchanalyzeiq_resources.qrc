@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="imagery">
     <file>imagery/wasatch_name.png</file>
+    <file>imagery/IgnitionIcon.ico</file>
   </qresource>
 </RCC>

@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>622</width>
+    <width>540</width>
     <height>302</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Wasatch Photonics Device</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="wasatchanalyzeiq_resources.qrc">
+    <normaloff>:/imagery/imagery/IgnitionIcon.ico</normaloff>:/imagery/imagery/IgnitionIcon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
@@ -126,7 +130,7 @@
            <widget class="QSpinBox" name="spinBoxIntegrationTime">
             <property name="minimumSize">
              <size>
-              <width>200</width>
+              <width>160</width>
               <height>0</height>
              </size>
             </property>
@@ -176,7 +180,7 @@
          <item row="0" column="1">
           <widget class="QLineEdit" name="lineEditCoeff0">
            <property name="text">
-            <string>778.267</string>
+            <string>802.284</string>
            </property>
           </widget>
          </item>
@@ -190,7 +194,7 @@
          <item row="1" column="1">
           <widget class="QLineEdit" name="lineEditCoeff1">
            <property name="text">
-            <string>0.189334</string>
+            <string>0.14186</string>
            </property>
           </widget>
          </item>
@@ -204,7 +208,7 @@
          <item row="2" column="1">
           <widget class="QLineEdit" name="lineEditCoeff2">
            <property name="text">
-            <string>1.24617e-05</string>
+            <string>-5.56872e-06</string>
            </property>
           </widget>
          </item>
@@ -218,7 +222,7 @@
          <item row="3" column="1">
           <widget class="QLineEdit" name="lineEditCoeff3">
            <property name="text">
-            <string>-3.17627e-08</string>
+            <string>-8.79056e-09</string>
            </property>
           </widget>
          </item>
@@ -234,8 +238,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>622</width>
-     <height>23</height>
+     <width>540</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>
