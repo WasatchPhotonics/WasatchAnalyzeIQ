@@ -26,16 +26,19 @@ class WasatchDeviceApplication(object):
     def parse_args(self, argv):
         """ Handle any bad arguments, the set defaults
         """
-        sys.stderr.write("Start of parse args with %s" % argv)
+        self.args = self.parser.parse_args([])
+        return self.args
+
+        #sys.stderr.write("Start of parse args with %s\n" % argv)
         try:
             self.args = self.parser.parse_args(argv)
-            sys.stderr.write("done parsed ")
+            #sys.stderr.write("done parsed \n")
         except:
-            print "Problem parsing arguments, settings defaults"
-            sys.stderr.write("problem, re-arseing ")
+            sys.stderr.write("Setting default args\n")
+            #sys.stderr.write("problem, re-arseing \n")
             self.args = self.parser.parse_args([])
             
-        sys.stderr.write("finished ")
+        #sys.stderr.write("finished \n")
 
         return self.args
 
@@ -58,7 +61,7 @@ class WasatchDeviceApplication(object):
         application.
         """
 
-        print "start qapp: %s" % self.args.testing
+        #print "start qapp: %s" % self.args.testing
         if not self.args.testing:
             app = QtGui.QApplication(sys.argv)
 
@@ -84,7 +87,7 @@ def main(argv=None):
         # Strip out the program name to match the unittest setup
         argv = argv[1:]
     
-    print "Argv processed: %s" % argv
+    #print "Argv processed: %s" % argv
 
     exit_code = 0
     try:
@@ -95,10 +98,13 @@ def main(argv=None):
         exit_code = exc.code
 
     try:
+        sys.stderr.write("last xml; %s\n" % wsdapp.form.last_xml_output())
         print wsdapp.form.last_xml_output()
     except:
         print "Problem executing xml output"
 
+    sys.stderr.write("Exit with code 0")
+    sys.exit(0)
     return exit_code 
 
 if __name__ == "__main__":

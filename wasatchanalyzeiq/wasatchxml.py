@@ -188,10 +188,24 @@ class WasatchXML(QtGui.QMainWindow):
         self.generated_xml_str = xml.safe_substitute(populated)
 
     def last_xml_output(self):
+        try:
+            self.resultTimer.stop()
+        except:
+            pass
+
+        try:
+            self.closeTimer.stop()
+        except:
+            pass
+
+        try:
+            self.countdownTimer.stop()
+        except:
+            pass
+
         return self.generated_xml_str
 
-AIQ_TEMPLATE = """
-<?xml version="1.0" encoding="iso-8859-1"?>
+AIQ_TEMPLATE = """<?xml version="1.0" encoding="iso-8859-1"?>
 <AIQ version="1.0">
     <experiment type="Raman" language="en-us">
       <file>

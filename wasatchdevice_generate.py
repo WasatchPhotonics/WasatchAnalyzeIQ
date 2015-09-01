@@ -9,7 +9,7 @@ analyzeiq.
 from distutils.core import setup
 import py2exe
 
-setup(windows=["scripts\wasatchdevice.py"],
+setup(console=["scripts\wasatchdevice.py"],
       options={
           "py2exe": {
 
