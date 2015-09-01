@@ -129,6 +129,26 @@ class Test(unittest.TestCase):
         QtTest.QTest.qWait(2500)
         self.assertFalse(self.form.isVisible())
 
+    def test_auto_loads_simulation_device(self):
+        self.form.ui.spinBoxIntegrationTime.setValue(3000)
+
+        QtTest.QTest.mouseClick(self.form.ui.toolButtonAcquire,
+            QtCore.Qt.LeftButton)
+       
+        # Wait 1 second, make sure lcd number values are 'around' the
+        # appropriate range
+        QtTest.QTest.qWait(1000)
+        lcd_num = self.form.ui.lcdNumber.value()
+        self.assertLess(lcd_num, 2500)
+        self.assertGreater(lcd_num, 1500)
+
+        # Check to make sure the device created is of the threaded usb
+        # variety
+        self.assertIsInstance(self.form.device, ThreadedUSB)
+
+        QtTest.QTest.qWait(2500)
+        self.assertFalse(self.form.isVisible())
+
     def test_wavenumber_translation(self):
         # Create a simulation device, assign it to the device in the
         # application

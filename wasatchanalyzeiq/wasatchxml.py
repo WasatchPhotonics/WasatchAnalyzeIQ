@@ -3,6 +3,7 @@ spectrometers, write out in xml format for use in AnalyzeIQ. Designed to
 be used as part of the WasatchDevice script.
 """
 
+import sys
 import numpy
 import datetime
 from PyQt4 import QtGui, QtCore
@@ -38,31 +39,42 @@ class WasatchXML(QtGui.QMainWindow):
     def set_device(self, device=None):
         """ If no external device is specified, find the first device on
         the usb bus, connect. The external device assumes that it has
-        already been setup.
+        already been setup. This is for assigning devices during the
+        tests.
         """
         if device is not None:
             self.device = device
-            
-            self.ui.labelDeviceText.setText("Connected to %s" %
-                self.device.serial_number)
 
         else:
+            self.device = self.find_first_device_or_simulate()
+
+        self.ui.labelDeviceText.setText("Connected to %s" %
+            self.device.serial_number)
+
+        return True
+
+    def find_first_device_or_simulate(self):
+        simulated_device = ThreadedUSB()
+        try:
             fd = FindDevices()
             result, usb_info = fd.list_usb()
             print " USB ID strings: %s" % usb_info
-        
-            #result, serial = fd.get_serial(self.vid, self.pid)
-            #bus_str += " Serial USB Descriptor: %s" % serial
+            (vid, pid) = usb_info.split(':')[0:1]
+        except:
+            print "Problem finding devices: %s" % str(sys.exc_info())
+            
 
-            self.device = CameraUSB()
-            result = self.device.connect(0x24aa, 0x0009)
-            print "Connect: %s" % result
-            result, sw_code = self.device.get_sw_code()
-            result, fpga_code = self.device.get_fpga_code()
-    
-            print  "SW: %s FPGA: %s" % (sw_code, fpga_code)
+        try:
+            real_device = CameraUSB()
+            if real_device.connect(vid, pid):
+                return real_device
+        except:
+            print "Problem connecting device: %s" % str(sys.exc_info())
 
-        return True
+        print "Return simulated device"
+        simulated_device.assign("Stroker785L")
+        simulated_device.serial_number = "Simulated Stroker785L"
+        return simulated_device            
 
     def acquire(self):
         """ Connect to the device, acquire a spectra, send the pixel
