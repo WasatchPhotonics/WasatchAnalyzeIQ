@@ -58,8 +58,8 @@ class WasatchXML(QtGui.QMainWindow):
         try:
             fd = FindDevices()
             result, usb_info = fd.list_usb()
-            #print " USB ID strings: %s" % usb_info
-            (vid, pid) = usb_info.split(':')[0:1]
+            #print " USB ID strings: %s" % usb_info[0]
+            (vid, pid) = usb_info[0].split(':')[0:2]
         except:
             #print "Problem finding devices: %s" % str(sys.exc_info())
             pass
@@ -67,7 +67,7 @@ class WasatchXML(QtGui.QMainWindow):
 
         try:
             real_device = CameraUSB()
-            if real_device.connect(vid, pid):
+            if real_device.connect(9386, pid):
                 return real_device
         except:
             #print "Problem connecting device: %s" % str(sys.exc_info())
@@ -84,6 +84,8 @@ class WasatchXML(QtGui.QMainWindow):
         """
        
         self.apply_coefficients()
+        int_time = self.ui.spinBoxIntegrationTime.value()
+        self.device.set_integration_time(int_time)
 
         if isinstance(self.device, ThreadedUSB):
             self.start_non_blocking_read()

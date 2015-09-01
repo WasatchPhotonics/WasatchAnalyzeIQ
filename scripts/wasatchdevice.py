@@ -79,7 +79,7 @@ def main(argv=None):
     except SystemExit, exc:
         exit_code = exc.code
 
-    #print wsdapp.form.last_xml_output()
+    print wsdapp.form.last_xml_output()
     return exit_code 
 
 if __name__ == "__main__":

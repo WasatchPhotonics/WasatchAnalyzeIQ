@@ -143,7 +143,7 @@ class Test(unittest.TestCase):
         self.assertGreater(lcd_num, 1500)
 
         # Check to make sure the device created is of the threaded usb
-        # variety
+        # variety. This will fail if you have an actual device plugged in
         self.assertIsInstance(self.form.device, ThreadedUSB)
 
         QtTest.QTest.qWait(2500)
