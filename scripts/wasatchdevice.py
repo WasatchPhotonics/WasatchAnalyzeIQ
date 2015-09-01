@@ -23,7 +23,6 @@ class WasatchDeviceApplication(object):
         self.parser = self.create_parser()
 
     def parse_args(self, argv):
-        print "Full parse args: [%s]" % argv
         self.args = self.parser.parse_args(argv)
         return self.args
 
@@ -42,7 +41,6 @@ class WasatchDeviceApplication(object):
         exit with the app.exec if the unittest has not created the qt 
         application.
         """
-        print "in run with: %s" % self.args.auto_capture
 
         self.form = wasatchxml.WasatchXML()
 
@@ -59,8 +57,10 @@ def main(argv=None):
     if argv is None: 
         from sys import argv as sys_argv 
         argv = sys_argv 
+    else:
+        # Strip out the program name to match the unittest setup
+        argv = argv[1:]
         
-    print "start main: %s" % argv
 
     exit_code = 0
     try:
@@ -72,6 +72,7 @@ def main(argv=None):
     except SystemExit, exc:
         exit_code = exc.code
 
+    print wsdapp.form.last_xml_output()
     return exit_code 
 
 if __name__ == "__main__":

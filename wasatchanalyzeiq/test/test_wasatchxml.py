@@ -179,13 +179,15 @@ class Test(unittest.TestCase):
         self.assertEqual("%05.2f" % float(xaxis_data[-1]), last_conv)
 
     def test_device_status_displayed(self):
+        # Form will create a Stroker785L simulated device on first call
+        # to set_device
+        self.assertEqual(self.form.ui.labelDeviceText.text(), 
+            "Connected to Simulated Stroker785L")
+
         # Create a simulation device, set in form, make sure the device
         # label updates
         sim_device = SimulatedUSB()
         sim_device.assign("Stroker785L")
-
-        self.assertEqual(self.form.ui.labelDeviceText.text(), 
-            "Searching for device...")
 
         self.assertTrue(self.form.set_device(sim_device))
         self.assertEqual(self.form.ui.labelDeviceText.text(), 

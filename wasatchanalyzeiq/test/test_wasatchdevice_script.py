@@ -22,6 +22,9 @@ class Test(unittest.TestCase):
     def test_scripts_main(self):
         result = wasatchdevice.main(["-a"])
         self.assertEquals(0, result)
+        
+
+        # if it starts at all, it returns at least a simulation device
 
     def test_with_gui_main(self):
         # create the qtapp requirements, use the testing flag to

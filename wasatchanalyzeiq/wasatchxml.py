@@ -58,10 +58,11 @@ class WasatchXML(QtGui.QMainWindow):
         try:
             fd = FindDevices()
             result, usb_info = fd.list_usb()
-            print " USB ID strings: %s" % usb_info
+            #print " USB ID strings: %s" % usb_info
             (vid, pid) = usb_info.split(':')[0:1]
         except:
-            print "Problem finding devices: %s" % str(sys.exc_info())
+            #print "Problem finding devices: %s" % str(sys.exc_info())
+            pass
             
 
         try:
@@ -69,9 +70,10 @@ class WasatchXML(QtGui.QMainWindow):
             if real_device.connect(vid, pid):
                 return real_device
         except:
-            print "Problem connecting device: %s" % str(sys.exc_info())
+            #print "Problem connecting device: %s" % str(sys.exc_info())
+            pass
 
-        print "Return simulated device"
+        #print "Return simulated device"
         simulated_device.assign("Stroker785L")
         simulated_device.serial_number = "Simulated Stroker785L"
         return simulated_device            
