@@ -32,6 +32,9 @@ class WasatchDeviceApplication(object):
     
         parser.add_argument("-a", "--auto-capture", action="store_true",
             help="Automatically acquire after startup")
+
+        parser.add_argument("-t", "--testing", action="store_true",
+            help="inhibit qapplication creation and exit for unittest")
     
         return parser
 
@@ -42,10 +45,16 @@ class WasatchDeviceApplication(object):
         application.
         """
 
+        if not self.args.testing:
+            app = QtGui.QApplication(sys.argv)
+
         self.form = wasatchxml.WasatchXML()
 
         if self.args.auto_capture:
             self.form.acquire()
+
+        if not self.args.testing:
+            sys.exit(app.exec_())
 
 def main(argv=None): 
     """ main calls the wrapper code around the application objects with
@@ -64,15 +73,13 @@ def main(argv=None):
 
     exit_code = 0
     try:
-        app = QtGui.QApplication(sys.argv)
         wsdapp = WasatchDeviceApplication()
         wsdapp.parse_args(argv)
         wsdapp.run()
-        sys.exit(app.exec_())
     except SystemExit, exc:
         exit_code = exc.code
 
-    print wsdapp.form.last_xml_output()
+    #print wsdapp.form.last_xml_output()
     return exit_code 
 
 if __name__ == "__main__":
