@@ -24,7 +24,14 @@ class WasatchDeviceApplication(object):
         self.parser = self.create_parser()
 
     def parse_args(self, argv):
-        self.args = self.parser.parse_args(argv)
+        """ Handle any bad arguments, the set defaults
+        """
+        try:
+            self.args = self.parser.parse_args(argv)
+        except:
+            print "Problem parsing arguments, settings defaults"
+            self.args = self.parser.parse_args([])
+
         return self.args
 
     def create_parser(self):
@@ -46,6 +53,7 @@ class WasatchDeviceApplication(object):
         application.
         """
 
+        print "start qapp: %s" % self.args.testing
         if not self.args.testing:
             app = QtGui.QApplication(sys.argv)
 
@@ -70,7 +78,8 @@ def main(argv=None):
     else:
         # Strip out the program name to match the unittest setup
         argv = argv[1:]
-        
+    
+    print "Argv processed: %s" % argv
 
     exit_code = 0
     try:
@@ -80,7 +89,11 @@ def main(argv=None):
     except SystemExit, exc:
         exit_code = exc.code
 
-    print wsdapp.form.last_xml_output()
+    try:
+        print wsdapp.form.last_xml_output()
+    except:
+        print "Problem executing xml output"
+
     return exit_code 
 
 if __name__ == "__main__":
