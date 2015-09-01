@@ -7,6 +7,7 @@ import sys
 import argparse
 
 from PyQt4 import QtGui
+from PyQt4 import QtCore # required for py2exe
 
 from wasatchanalyzeiq import wasatchxml
 
