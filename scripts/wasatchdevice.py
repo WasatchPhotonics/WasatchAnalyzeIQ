@@ -26,11 +26,16 @@ class WasatchDeviceApplication(object):
     def parse_args(self, argv):
         """ Handle any bad arguments, the set defaults
         """
+        sys.stderr.write("Start of parse args with %s" % argv)
         try:
             self.args = self.parser.parse_args(argv)
+            sys.stderr.write("done parsed ")
         except:
             print "Problem parsing arguments, settings defaults"
+            sys.stderr.write("problem, re-arseing ")
             self.args = self.parser.parse_args([])
+            
+        sys.stderr.write("finished ")
 
         return self.args
 
