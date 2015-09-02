@@ -6,9 +6,9 @@ import sys
 
 
 def main(argv=None): 
-    """ immediately return with exit code zero
+    """ immediately return with exit code ten required by analyzeiq
     """
-    return 0
+    return 10
 
 if __name__ == "__main__":
     sys.exit(main(sys.argv))
