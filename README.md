@@ -3,6 +3,7 @@ WasatchAnalyzeIQ
 
 Acquire data from Wasatch Photonics spectrometers for use in AnalyzeIQ
 
+![wasatch analyzeiq screenshot](/docs/wasatch_photonics_analyzeiq_popup.png "wasatch analyzeiq screenshot")
 
 Requirements
 ------------
@@ -13,8 +14,18 @@ Requirements
 Installation 
 --------------------
 
-Copy the contents of the folder into analyzeiq directory
-screenshots from email go here
+The instructions are for the default installation location of C:\Analyze IQ V2\.
+You may have to change the prefix to match your instllation.
+
+Create the following folder:
+<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
+
+Copy the contents of the WasatchAnalyzeIQ\dist folder into:
+<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
+
+Copy the scripts\emulator.inst file into:
+<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
+
 
 Setup and Rebuilding
 --------------------
@@ -28,9 +39,10 @@ python wasatchdevice_check_generate.py py2exe
 python wasatchdevice_inst_generate.py py2exe
 
 Copy the entire contents of the executable file into the directory:
+<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
 
-To package up for installation, create a zip file with the name:
-11_Wasatch.zip
+To package up for redistribution, create a zip file with the name:
+11-WasatchPhotonicsStroker.zip
 
 
 Documentation
