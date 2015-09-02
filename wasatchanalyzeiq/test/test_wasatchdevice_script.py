@@ -4,7 +4,8 @@ called by analyze iq.
 
 import unittest
 
-from scripts import wasatchdevice
+from scripts import wasatchdevice_inst
+from scripts import wasatchdevice_check
 
 from PyQt4 import QtGui
 
@@ -15,12 +16,21 @@ class Test(unittest.TestCase):
     def setUp(self):
         pass
 
+    def test_check_return_code_ten(self):
+        # According to the analyzeiq spec, the check call must return code 10 to
+        # indicate success
+        check_app = wasatchdevice_check.main()
+        self.assertEquals(10, check_app)
+
     def test_command_line_options(self):
         # Accept one option, auto - which auto closes the box
-        wsdapp = wasatchdevice.WasatchDeviceApplication() 
+        # -t is for not displaying the qapplication so it can be controlled in
+        # unittest
+        wsdapp = wasatchdevice_inst.WasatchDeviceApplication() 
          
         args = wsdapp.parse_args(["-a", "-t"])
-        self.assertIsNotNone(args.auto_capture)
+        self.assertTrue(args.auto_capture)
+        self.assertTrue(args.testing)
 
 
     def test_scripts_main(self):
