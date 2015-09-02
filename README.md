@@ -20,10 +20,7 @@ You may have to change the prefix to match your instllation.
 Create the following folder:
 <analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
 
-Copy the contents of the WasatchAnalyzeIQ\dist folder into:
-<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
-
-Copy the scripts\emulator.inst file into:
+Copy the contents of the 11-WasatchPhotonicsStroker folder into:
 <analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
 
 

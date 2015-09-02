@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Wasatch Photonics Stroker instrument interface configuration file -->
+<inst version="1.0">   
+  <!-- The interface block can be repeated if two different instruments use the same interface software -->
+  <interface>
+    <!-- All fields in the block are compulsory, except launchArgs and checkConnectArgs, -->
+    <!-- which are only needed if you need to pass additional arguments to the programs. -->
+    <manufacturer>Wasatch Photonics</manufacturer>
+    <model>Stroker</model>
+    <launchProgram>wasatchdevice_inst.exe</launchProgram>
+    <checkConnectProgram>wasatchdevice_check.exe</checkConnectProgram>
+    <about>Enables communication with a Wasatch Photonics Stroker.</about>
+  </interface>
+</inst>
