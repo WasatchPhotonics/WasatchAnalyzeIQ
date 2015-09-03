@@ -64,8 +64,7 @@ class WasatchXML(QtGui.QMainWindow):
             log.debug(" USB ID strings: %s" % usb_info[0])
             (vid, pid) = usb_info[0].split(':')[0:2]
         except:
-            #print "Problem finding devices: %s" % str(sys.exc_info())
-            pass
+            log.debug("Error find devices: %s" % str(sys.exc_info()))
             
 
         try:
