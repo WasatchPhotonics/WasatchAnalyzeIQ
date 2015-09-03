@@ -75,7 +75,7 @@ class WasatchXML(QtGui.QMainWindow):
                 log.debug("Succesfull connection to: %s" % pid)
                 return real_device
         except:
-            log.debug("Exception %s" % sys.exc_info())
+            log.debug("Exception %s" % str(sys.exc_info()))
             pass
 
         log.debug("Return simulated device")
