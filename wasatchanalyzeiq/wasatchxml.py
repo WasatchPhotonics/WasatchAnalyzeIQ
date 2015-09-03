@@ -92,6 +92,9 @@ class WasatchXML(QtGui.QMainWindow):
         int_time = self.ui.spinBoxIntegrationTime.value()
         self.device.set_integration_time(int_time)
 
+        laser = self.ui.checkBoxLaserEnable.isChecked()
+        self.device.set_laser_enable(laser)
+
         log.debug("call get line wavenumber")
         wavenum_axis, intensity_data = self.device.get_line_wavenumber()
         self.build_xml(wavenum_axis, intensity_data)
@@ -131,6 +134,13 @@ class WasatchXML(QtGui.QMainWindow):
         self.countdownTimer = QtCore.QTimer()
         self.countdownTimer.timeout.connect(self.update_lcd_display)
         self.countdownTimer.start(10)
+
+        # Attempt to turn the laser off
+        try:
+            self.device.set_laser_enable(False)
+        except:
+            log.debug("Problem disabling laser")
+                   
 
     def update_lcd_display(self):
         """ Show the current countdown information.

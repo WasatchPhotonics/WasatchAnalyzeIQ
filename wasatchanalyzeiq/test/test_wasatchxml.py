@@ -225,6 +225,8 @@ class Test(unittest.TestCase):
         self.assertLess(diff_time, margin_time + 0.5)
         self.assertGreater(diff_time, margin_time - 0.5)
 
+    #def test_laser_enable_increases_output(self):
+
 
 if __name__ == "__main__":
     unittest.main()
