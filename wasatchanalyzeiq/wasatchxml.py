@@ -100,22 +100,6 @@ class WasatchXML(QtGui.QMainWindow):
         self.build_xml(wavenum_axis, intensity_data)
 
         self.delay_close()
-        
-
-    def results_timer(self):
-        """ Look for results from the threaded usb device object until
-        the timer reaches zero, otherwise just return empty data.
-        """
-        log.debug("Searching for data ready")
-        if self.device.is_data_ready():
-            intensity_data = self.device.get_last_data()
-            log.debug("Last data acquired, start xml build")
-            #self.build_xml(wavenum_axis, intensity_data)
-            self.resultTimer.stop()
-
-        else:           
-            if self.ui.lcdNumber.value() > 0: 
-                self.resultTimer.start(100)
 
 
     def delay_close(self):
@@ -197,10 +181,6 @@ class WasatchXML(QtGui.QMainWindow):
         """ Make sure all of the timers are forced stop if the program is
         exited, catch the exceptions if they have not been created.
         """
-        try:
-            self.resultTimer.stop()
-        except:
-            pass
 
         try:
             self.closeTimer.stop()
