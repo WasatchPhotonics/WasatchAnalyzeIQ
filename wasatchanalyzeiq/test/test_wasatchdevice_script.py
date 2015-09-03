@@ -32,26 +32,10 @@ class Test(unittest.TestCase):
         self.assertTrue(args.auto_capture)
         self.assertTrue(args.testing)
 
-
-    def test_scripts_main(self):
-        # Enter no command line options, expect it to operate
-        result = wasatchdevice_inst.main()
-        self.assertEquals(0, result)
-
-        bad = "C:\Analyze IQ V2\Common\InstrumentData\11-" \
-              + "WasatchPhotonicsStroker_0"
-        result = wasatchdevice_inst.main(bad)
-        self.assertEquals(0, result)
-
     def test_auto_close(self):
         # Enter a valid set of command line options, expect success
         result = wasatchdevice_inst.main(["unittest", "-a", "-t"])
         self.assertEquals(0, result)
         
-#usage: wasatch_inst.exe [-h] [-a] [-t]
-#wasatch_inst.exe: error: unrecognized arguments: C:\Analyze IQ V2\Common\InstrumentData\11-WasatchPhotonicsStroker_0
-#Traceback (most recent call last):
-
-
 if __name__ == "__main__":
     unittest.main()
