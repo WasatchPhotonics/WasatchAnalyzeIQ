@@ -103,9 +103,9 @@ def main(argv=None):
     #xmlfile = open("C:\\projects\orig_inst.log")
     #for line in xmlfile.readlines():
     #    print line, 
-    xmlfile = open("C:\\projects\\maybe_good.log")
-    for line in xmlfile.readlines():
-        print line, 
+    #xmlfile = open("C:\\projects\\maybe_good.log")
+    #for line in xmlfile.readlines():
+        #print line, 
 
     return exit_code 
 

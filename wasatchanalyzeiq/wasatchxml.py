@@ -160,10 +160,10 @@ class WasatchXML(QtGui.QMainWindow):
          
     def apply_coefficients(self): 
         # Make sure any changes to the coefficients are applied
-        coeff_dict = {"C0": self.ui.lineEditCoeff0.text(),
-                      "C1": self.ui.lineEditCoeff1.text(),
-                      "C2": self.ui.lineEditCoeff1.text(),
-                      "C3": self.ui.lineEditCoeff1.text()
+        coeff_dict = {"C0": float(self.ui.lineEditCoeff0.text()),
+                      "C1": float(self.ui.lineEditCoeff1.text()),
+                      "C2": float(self.ui.lineEditCoeff2.text()),
+                      "C3": float(self.ui.lineEditCoeff3.text())
                      }
         self.device.new_coefficients(coeff_dict)
 
@@ -180,8 +180,10 @@ class WasatchXML(QtGui.QMainWindow):
         scanduration = self.ui.spinBoxIntegrationTime.value()
 
         space_x_data = ""
+        faker_x = 0
         for item in x_data:
-            space_x_data += "%s " % item
+            space_x_data += "%s " % (item + faker_x)
+            faker_x += 0
 
         space_y_data = ""
         for item in y_data:
