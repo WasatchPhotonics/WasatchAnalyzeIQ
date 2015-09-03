@@ -35,17 +35,17 @@ class Test(unittest.TestCase):
 
     def test_scripts_main(self):
         # Enter no command line options, expect it to operate
-        result = wasatchdevice.main()
+        result = wasatchdevice_inst.main()
         self.assertEquals(0, result)
 
         bad = "C:\Analyze IQ V2\Common\InstrumentData\11-" \
               + "WasatchPhotonicsStroker_0"
-        result = wasatchdevice.main(bad)
+        result = wasatchdevice_inst.main(bad)
         self.assertEquals(0, result)
 
     def test_auto_close(self):
         # Enter a valid set of command line options, expect success
-        result = wasatchdevice.main(["unittest", "-a", "-t"])
+        result = wasatchdevice_inst.main(["unittest", "-a", "-t"])
         self.assertEquals(0, result)
         
 #usage: wasatch_inst.exe [-h] [-a] [-t]

@@ -5,11 +5,16 @@ the AnalyzeIQ product. Produces xml output on stdout.
 
 import sys
 import argparse
+import logging
 
 from PyQt4 import QtGui
 from PyQt4 import QtCore # required for py2exe
 
 from wasatchanalyzeiq import wasatchxml
+
+logging.basicConfig(filename="wasatchaiq_log.txt", filemode="w",
+                    level=logging.DEBUG)
+log = logging.getLogger()
 
 class WasatchDeviceApplication(object):
     """ Wrapper around application control code based on:
@@ -27,6 +32,7 @@ class WasatchDeviceApplication(object):
         """ Handle any bad arguments, the set defaults
         """
 
+        log.debug("Parse args: %s" % argv)
         try:
             self.args = self.parser.parse_args(argv)
         except:
@@ -58,9 +64,11 @@ class WasatchDeviceApplication(object):
         if not self.args.testing:
             app = QtGui.QApplication(sys.argv)
 
+        log.debug("create xml object")
         self.form = wasatchxml.WasatchXML()
 
         if self.args.auto_capture:
+            log.debug("Auto capture acquire")
             self.form.acquire()
 
         if not self.args.testing:
@@ -91,7 +99,6 @@ def main(argv=None):
         exit_code = exc.code
 
     #try:
-        ##sys.stderr.write("last xml; %s\n" % wsdapp.form.last_xml_output())
         #out_file = open("c:\\projects\\outfile.txt", "w")
         #out_file.write(wsdapp.form.last_xml_output())
         #print wsdapp.form.last_xml_output()
@@ -102,8 +109,6 @@ def main(argv=None):
     for line in xmlfile.readlines():
         print line, 
 
-    #sys.stderr.write("Exit with code 0")
-    sys.exit(0)
     return exit_code 
 
 if __name__ == "__main__":

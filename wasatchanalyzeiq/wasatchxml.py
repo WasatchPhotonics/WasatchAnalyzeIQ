@@ -5,6 +5,7 @@ be used as part of the WasatchDevice script.
 
 import sys
 import numpy
+import logging
 import datetime
 from PyQt4 import QtGui, QtCore
 from string import Template
@@ -13,6 +14,8 @@ from wasatchanalyzeiq.ui.AnalyzeIQLayout import Ui_MainWindow
 from wasatchusb.camera import ThreadedUSB
 from wasatchusb.camera import CameraUSB
 from wasatchusb.utils import FindDevices
+
+log = logging.getLogger(__name__)
 
 class WasatchXML(QtGui.QMainWindow):
     
@@ -82,7 +85,7 @@ class WasatchXML(QtGui.QMainWindow):
         """ Connect to the device, acquire a spectra, send the pixel
         results to the build xml function.
         """
-       
+        log.debug("acquire")       
         self.apply_coefficients()
         int_time = self.ui.spinBoxIntegrationTime.value()
         self.device.set_integration_time(int_time)
