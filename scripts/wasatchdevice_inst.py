@@ -87,8 +87,8 @@ def main(argv=None):
     else:
         # Strip out the program name to match the unittest setup
         argv = argv[1:]
-    
-    #print "Argv processed: %s" % argv
+   
+    log.debug("Input args: %s" % argv)
 
     exit_code = 0
     try:
@@ -98,14 +98,12 @@ def main(argv=None):
     except SystemExit, exc:
         exit_code = exc.code
 
-    #try:
-        #out_file = open("c:\\projects\\outfile.txt", "w")
-        #out_file.write(wsdapp.form.last_xml_output())
-        #print wsdapp.form.last_xml_output()
-    #except:
-        #print "Problem executing xml output"
 
-    xmlfile = open("C:\\projects\orig_inst.log")
+    print wsdapp.form.last_xml_output()
+    #xmlfile = open("C:\\projects\orig_inst.log")
+    #for line in xmlfile.readlines():
+    #    print line, 
+    xmlfile = open("C:\\projects\\maybe_good.log")
     for line in xmlfile.readlines():
         print line, 
 

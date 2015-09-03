@@ -61,7 +61,7 @@ class WasatchXML(QtGui.QMainWindow):
         try:
             fd = FindDevices()
             result, usb_info = fd.list_usb()
-            #print " USB ID strings: %s" % usb_info[0]
+            log.debug(" USB ID strings: %s" % usb_info[0])
             (vid, pid) = usb_info[0].split(':')[0:2]
         except:
             #print "Problem finding devices: %s" % str(sys.exc_info())
@@ -70,13 +70,15 @@ class WasatchXML(QtGui.QMainWindow):
 
         try:
             real_device = CameraUSB()
+            log.debug("Attempt real device connection")
             if real_device.connect(9386, pid):
+                log.debug("Succesfull connection to: %s" % pid)
                 return real_device
         except:
-            #print "Problem connecting device: %s" % str(sys.exc_info())
+            log.debug("Exception %s" % sys.exc_info())
             pass
 
-        #print "Return simulated device"
+        log.debug("Return simulated device")
         simulated_device.assign("Stroker785L")
         simulated_device.serial_number = "Simulated Stroker785L"
         return simulated_device            
@@ -91,9 +93,11 @@ class WasatchXML(QtGui.QMainWindow):
         self.device.set_integration_time(int_time)
 
         if isinstance(self.device, ThreadedUSB):
+            log.debug("it is a threaded simulation device")
             self.start_non_blocking_read()
 
         else:
+            log.debug("call get line wavenumber")
             wavenum_axis, intensity_data = self.device.get_line_wavenumber()
             self.build_xml(wavenum_axis, intensity_data)
 
@@ -107,6 +111,7 @@ class WasatchXML(QtGui.QMainWindow):
         self.resultTimer.timeout.connect(self.results_timer)
         self.resultTimer.start(10)
 
+        log.debug("Trigger acquire on device")
         self.device.start_acquire()
         
 
@@ -114,8 +119,10 @@ class WasatchXML(QtGui.QMainWindow):
         """ Look for results from the threaded usb device object until
         the timer reaches zero, otherwise just return empty data.
         """
+        log.debug("Searching for data ready")
         if self.device.is_data_ready():
             intensity_data = self.device.get_last_data()
+            log.debug("Last data acquired, start xml build")
             #self.build_xml(wavenum_axis, intensity_data)
             self.resultTimer.stop()
 
@@ -159,6 +166,7 @@ class WasatchXML(QtGui.QMainWindow):
                       "C3": self.ui.lineEditCoeff1.text()
                      }
         self.device.new_coefficients(coeff_dict)
+
 
     def build_xml(self, x_data, y_data):
         """ Use python string template to build the AnalyzeIQ xml output
