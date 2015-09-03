@@ -18,7 +18,8 @@ The instructions are for the default installation location of C:\Analyze IQ V2\.
 You may have to change the prefix to match your instllation.
 
 Create the following folder:
-<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
+
+analyzieq_location\Common\Instrument\11-WasatchPhotonicsStroker
 
 Copy the entire contents of the build directory:
 
@@ -26,7 +27,7 @@ WasatchAnalyzeIQ\11-WasatchPhotonicsStroker
 
 into the folder:
 
-<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
+analyzieq_location\Common\Instrument\11-WasatchPhotonicsStroker
 
 
 Setup and Rebuilding
@@ -34,17 +35,17 @@ Setup and Rebuilding
 
 After modifications have been made, rebuild the wasatchdevice_inst and
 wasatchdevice_check executables with the commands:
-
+````
 python wasatchdevice_check_generate.py py2exe
 python wasatchdevice_inst_generate.py py2exe
-
+````
 Copy the entire contents of the build directory:
 
 WasatchAnalyzeIQ\11-WasatchPhotonicsStroker
 
 into the folder:
 
-<analyzieq>\Common\Instrument\11-WasatchPhotonicsStroker
+analyzieq_location\Common\Instrument\11-WasatchPhotonicsStroker
 
 To package up for redistribution, create a zip file with the name:
 11-WasatchPhotonicsStroker.zip
