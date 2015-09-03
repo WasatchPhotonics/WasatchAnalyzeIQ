@@ -11,7 +11,7 @@ from PyQt4 import QtGui, QtCore
 from string import Template
 
 from wasatchanalyzeiq.ui.AnalyzeIQLayout import Ui_MainWindow
-from wasatchusb.camera import ThreadedUSB
+from wasatchusb.camera import SimulatedUSB
 from wasatchusb.camera import CameraUSB
 from wasatchusb.utils import FindDevices
 
@@ -57,7 +57,7 @@ class WasatchXML(QtGui.QMainWindow):
         return True
 
     def find_first_device_or_simulate(self):
-        simulated_device = ThreadedUSB()
+        simulated_device = SimulatedUSB()
         try:
             fd = FindDevices()
             result, usb_info = fd.list_usb()
@@ -92,27 +92,11 @@ class WasatchXML(QtGui.QMainWindow):
         int_time = self.ui.spinBoxIntegrationTime.value()
         self.device.set_integration_time(int_time)
 
-        if isinstance(self.device, ThreadedUSB):
-            log.debug("it is a threaded simulation device")
-            self.start_non_blocking_read()
-
-        else:
-            log.debug("call get line wavenumber")
-            wavenum_axis, intensity_data = self.device.get_line_wavenumber()
-            self.build_xml(wavenum_axis, intensity_data)
+        log.debug("call get line wavenumber")
+        wavenum_axis, intensity_data = self.device.get_line_wavenumber()
+        self.build_xml(wavenum_axis, intensity_data)
 
         self.delay_close()
-
-    def start_non_blocking_read(self):
-        """ Use the ThreadedUSB interface capability to start an
-        acquisition. Start a results timer.
-        """
-        self.resultTimer = QtCore.QTimer()
-        self.resultTimer.timeout.connect(self.results_timer)
-        self.resultTimer.start(10)
-
-        log.debug("Trigger acquire on device")
-        self.device.start_acquire()
         
 
     def results_timer(self):
